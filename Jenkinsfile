@@ -16,13 +16,13 @@ pipeline {
                 sh "ls -ltr"
             }
         }
-        // stage('Run Terraform Init') {
-        //     steps {
-        //         // Initialize terraform backend
-        //         sh "printenv"
-        //         sh "terraform init"
-        //     }
-        // }
+        stage('Build Direction App') {
+            steps {
+                // Build Direction App
+                sh "mvn clean package"
+                sh "cp target/*.jar /tmp/direction.jar"
+            }
+        }
         // stage('Run Terraform Plan') {
         //     steps {
         //         // Run terraform plan
