@@ -23,12 +23,12 @@ pipeline {
                 sh "cp target/*.jar /tmp/direction.jar"
             }
         }
-        // stage('Run Terraform Plan') {
-        //     steps {
-        //         // Run terraform plan
-        //         sh "terraform plan"
-        //     }
-        // }
+        stage('Run Run Direction App') {
+            steps {
+                // Run Direction App
+                sh "loginname=myname loginpass=mypass api_key=my_google_api_key java -jar /tmp/direction.jar"
+            }
+        }
         // stage('Get Approval') {
         //     steps {
         //        script {
