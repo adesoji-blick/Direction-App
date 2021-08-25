@@ -34,7 +34,7 @@ pipeline {
                 // ssh into prod machine
                 // withCredentials([sshUserPrivateKey(credentialsId: '', keyFileVariable: 'jenkins-key', passphraseVariable: 'keyFileVariable')]) {
     // some block
-               sh "35.182.252.41 sudo docker run -d -p 8080:8080 blickng/direction-prod:latest -e loginname=ade -e loginpass=pass -e api_key=xxxxxxxx --name dir_app"
+               sh "ssh ec2-user@35.182.252.41 sudo docker run -d -p 8080:8080 blickng/direction-prod:latest -e loginname=ade -e loginpass=pass -e api_key=xxxxxxxx --name dir_app"
 // }
                 
             }
