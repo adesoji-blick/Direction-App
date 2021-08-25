@@ -16,19 +16,19 @@ pipeline {
                 sh "ls -ltr"
             }
         }
-        stage('Build Direction App') {
+        stage('Build Docker Image') {
             steps {
-                // Build Direction App
-                sh "mvn clean package"
-                sh "cp target/*.jar /tmp/direction.jar"
-            }
+                // Building Docker Image for Direction App
+                sh "sudo docker build -t direction-prod:latest ."
+                sh "sudo docker tag direction-prod:latest blickng/direction-prod:latest"
+          }
         }
-        stage('Run Run Direction App') {
-            steps {
-                // Run Direction App
-                sh "loginname=myname loginpass=mypass api_key=my_google_api_key java -jar /tmp/direction.jar"
-            }
-        }
+        // stage('Run Terraform Plan') {
+        //     steps {
+        //         // Run terraform plan
+        //         sh "terraform plan"
+        //     }
+        // }
         // stage('Get Approval') {
         //     steps {
         //        script {
