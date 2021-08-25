@@ -21,7 +21,9 @@ pipeline {
                 // Building Docker Image for Direction App
                 sh "sudo docker build -t direction-prod:latest ."
                 sh "sudo docker tag direction-prod:latest blickng/direction-prod:latest"
-          }
+                // sh 
+                // sh "sudo docker push blickng/direction-prod:latest"
+            }
         }
         // stage('Run Terraform Plan') {
         //     steps {

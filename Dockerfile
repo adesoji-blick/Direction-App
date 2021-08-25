@@ -1,4 +1,5 @@
-FROM dockette/mvn
+# FROM dockette/mvn
+FROM fabric8/maven-builder
 # LABEL maintainer="adesoji@blick.ng"
 COPY . /data
 WORKDIR /data
