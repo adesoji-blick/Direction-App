@@ -1,5 +1,4 @@
-#FROM dockette/mvn
-FROM maven
+FROM dockette/mvn
 # LABEL maintainer="adesoji@blick.ng"
 COPY . /data
 WORKDIR /data
