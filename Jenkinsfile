@@ -29,12 +29,12 @@ pipeline {
 }            
             }
         }
-        // stage('Run Terraform Plan') {
-        //     steps {
-        //         // Run terraform plan
-        //         sh "terraform plan"
-        //     }
-        // }
+        stage('Pull docker image and run container instance') {
+            steps {
+                // ssh into prod machine
+                sh "ssh ec2-user@35.183.126.76 sudo docker run -d -p 8080:8080 blickng/direction-prod:latest -e loginname=ade -e loginpass=pass -e api_key=xxxxxxxx --name dir_app"
+            }
+        }
         // stage('Get Approval') {
         //     steps {
         //        script {
