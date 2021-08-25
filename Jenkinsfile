@@ -32,7 +32,7 @@ pipeline {
         stage('Pull docker image and run container instance') {
             steps {
                 // ssh into prod machine
-                withCredentials([string(credentialsId: 'jenkins-key', variable: 'jenkins-key')]) {
+                withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-key', keyFileVariable: '')]) {
     // some block
                sh "ssh ec2-user@35.182.252.41 sudo docker run -d -p 8080:8080 blickng/direction-prod:latest -e loginname=ade -e loginpass=pass -e api_key=xxxxxxxx --name dir_app"
 }
