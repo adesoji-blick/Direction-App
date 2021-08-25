@@ -21,8 +21,12 @@ pipeline {
                 // Building Docker Image for Direction App
                 sh "sudo docker build -t direction-prod:latest ."
                 sh "sudo docker tag direction-prod:latest blickng/direction-prod:latest"
-                // sh 
-                // sh "sudo docker push blickng/direction-prod:latest"
+                withCredentials([string(credentialsId: 'DockerUserID', variable: 'dockerusername'), string(credentialsId: 'DockerPassword', variable: 'dockerpassword')]) {
+    // some block
+                sh "sudo docker login -u blickng -p $dockerpassword"
+                sh "sudo docker push blickng/direction-prod:latest"
+                sh "sudo docker logout"
+}            
             }
         }
         // stage('Run Terraform Plan') {
