@@ -36,8 +36,8 @@ pipeline {
                 }   
                 // ssh into prod machine Pull docker image and run container instance in remote machine
                 withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-key', keyFileVariable: '')]) {
-            //    sh "ssh ec2-user@35.182.252.41 sudo docker rm -f direction-app-prod"     
-               sh "ssh ec2-user@35.182.252.41 sudo docker run -d -p 8080:8080 -e loginname=myname -e loginpass=mypass -e api_key=xxxxxxxx --name direction-app-prod blickng/direction-app-prod:latest"
+                sh "ssh ec2-user@35.182.252.41 sudo docker rm -f direction-app-prod"     
+                sh "ssh ec2-user@35.182.252.41 sudo docker run -d -p 8080:8080 -e loginname=myname -e loginpass=mypass -e api_key=xxxxxxxx --name direction-app-prod blickng/direction-app-prod:latest"
              }
            }
         }
@@ -55,7 +55,7 @@ pipeline {
                 }   
                 // ssh into dev machine Pull docker image and run container instance in remote machine
                 withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-key', keyFileVariable: '')]) {
-                // sh "ssh ec2-user@99.79.10.86 sudo docker rm -f direction-app-dev"     
+                sh "ssh ec2-user@99.79.10.86 sudo docker rm -f direction-app-dev"     
                 sh "ssh ec2-user@99.79.10.86 sudo docker run -d -p 8080:8080 -e loginname=myname -e loginpass=mypass -e api_key=xxxxxxxx --name direction-app-dev blickng/direction-app-dev:latest"
              }
            }
