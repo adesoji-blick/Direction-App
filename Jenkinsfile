@@ -6,7 +6,7 @@ pipeline {
             AWS_DEFAULT_REGION    = credentials ('AWS_DEFAULT_REGION')
         } 
     stages {
-        stage('Direction App Code Download') {
+        stage('Download Direction-App code') {
             steps {
                 // Get direction App code from the repository
                 git 'https://github.com/adesoji-blick/Direction-App.git'
@@ -16,37 +16,45 @@ pipeline {
                 sh "ls -ltr"
             }
         }
-        stage('Build Docker Image') {
+        stage('Build Docker Image for Direction-App') {
             steps {
                 // Building Docker Image for Direction App
-                sh "sudo docker build -t direction-prod:latest ."
-                sh "sudo docker tag direction-prod:latest blickng/direction-prod:latest"
-                withCredentials([string(credentialsId: 'DockerUserID', variable: 'dockerusername'), string(credentialsId: 'DockerPassword', variable: 'dockerpassword')]) {
-                sh "sudo docker login -u blickng -p $dockerpassword"
-                sh "sudo docker push blickng/direction-prod:latest"
-                sh "sudo docker logout"
-                }            
+                sh "sudo docker build -t directionApp:latest ."        
             }
         }
-        stage('Master Branch') {
+        stage('Manage Master Branch for Prod App') {
             when {
                 branch "master"
             }
             steps {
-                // ssh into prod, machine Pull docker image and run container instance in remote machine
+                // tag docker image for prod app and push to docker.io
+                sh "sudo docker tag directionApp:latest blickng/directionApp-prod:latest"
+                withCredentials([string(credentialsId: 'DockerUserID', variable: 'dockerusername'), string(credentialsId: 'DockerPassword', variable: 'dockerpassword')]) {
+                sh "sudo docker login -u blickng -p $dockerpassword"
+                sh "sudo docker push blickng/directionApp-prod:latest"
+                sh "sudo docker logout"
+                }   
+                // ssh into prod machine Pull docker image and run container instance in remote machine
                 withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-key', keyFileVariable: '')]) {
-               sh "ssh ec2-user@35.182.252.41 sudo docker run -d -p 8080:8080 -e loginname=myname -e loginpass=mypass -e api_key=xxxxxxxx blickng/direction-prod:latest"
+               sh "ssh ec2-user@35.182.252.41 sudo docker run -d -p 8080:8080 -e loginname=myname -e loginpass=mypass -e api_key=xxxxxxxx blickng/directionApp-prod:latest"
              }
            }
         }
-        stage('Develop Branch') {
+        stage('Manage Develop Branch for Dev App') {
             when {
                 branch "develop"
             }
             steps {
-                // ssh into dev, machine Pull docker image and run container instance in remote machine
+                // tag docker image for dev app and push to docker.io
+                sh "sudo docker tag directionApp:latest blickng/directionApp-dev:latest"
+                withCredentials([string(credentialsId: 'DockerUserID', variable: 'dockerusername'), string(credentialsId: 'DockerPassword', variable: 'dockerpassword')]) {
+                sh "sudo docker login -u blickng -p $dockerpassword"
+                sh "sudo docker push blickng/directionApp-dev:latest"
+                sh "sudo docker logout"
+                }   
+                // ssh into dev machine Pull docker image and run container instance in remote machine
                 withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-key', keyFileVariable: '')]) {
-               sh "ssh ec2-user@99.79.10.86 sudo docker run -d -p 8080:8080 -e loginname=myname -e loginpass=mypass -e api_key=xxxxxxxx blickng/direction-dev:latest"
+               sh "ssh ec2-user@35.182.252.41 sudo docker run -d -p 8080:8080 -e loginname=myname -e loginpass=mypass -e api_key=xxxxxxxx blickng/directionApp-dev:latest"
              }
            }
         }
