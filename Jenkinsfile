@@ -41,12 +41,12 @@ pipeline {
         }
         stage('Develop Branch') {
             when {
-                branch "master"
+                branch "develop"
             }
             steps {
                 // ssh into dev, machine Pull docker image and run container instance in remote machine
                 withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-key', keyFileVariable: '')]) {
-               sh "ssh ec2-user@99.79.10.86 sudo docker run -d -p 8080:8080 -e loginname=myname -e loginpass=mypass -e api_key=xxxxxxxx blickng/direction-prod:latest"
+               sh "ssh ec2-user@99.79.10.86 sudo docker run -d -p 8080:8080 -e loginname=myname -e loginpass=mypass -e api_key=xxxxxxxx blickng/direction-dev:latest"
              }
            }
         }
