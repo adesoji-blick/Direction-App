@@ -34,23 +34,10 @@ pipeline {
                 // ssh into prod machine
                 withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-key', keyFileVariable: '')]) {
     // some block
-               sh "ssh ec2-user@35.182.252.41 sudo docker run -d -p 8080:8080 blickng/direction-prod:latest -e loginname=ade -e loginpass=pass -e api_key=xxxxxxxx --name dir_app"
+               sh "ssh ec2-user@99.79.10.86 sudo docker run -d -p 8080:8080 blickng/direction-prod:latest -e loginname=ade -e loginpass=pass -e api_key=xxxxxxxx --name dir_app"
 }
                 
             }
         }
-        // stage('Get Approval') {
-        //     steps {
-        //        script {
-        //           def userInput = input(id: 'confirm', message: 'Apply Terraform?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply Terraform', name: 'confirm'] ]) 
-        //        }
-        //     }
-        // } 
-        // stage('Apply Terraform Code') {
-        //     steps {
-        //         // Run terraform apply
-        //         sh "terraform apply --auto-approve"
-        //     }
-        // }
     }
 }
