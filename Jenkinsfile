@@ -28,7 +28,7 @@ pipeline {
             }
             steps {
                 // tag docker image for prod app and push to docker.io
-                sh "sudo docker tag directionApp:latest blickng/directionApp-prod:latest"
+                sh "sudo docker tag directionApp:latest blickng/direction-app-prod:latest"
                 withCredentials([string(credentialsId: 'DockerUserID', variable: 'dockerusername'), string(credentialsId: 'DockerPassword', variable: 'dockerpassword')]) {
                 sh "sudo docker login -u blickng -p $dockerpassword"
                 sh "sudo docker push blickng/directionApp-prod:latest"
@@ -36,7 +36,7 @@ pipeline {
                 }   
                 // ssh into prod machine Pull docker image and run container instance in remote machine
                 withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-key', keyFileVariable: '')]) {
-               sh "ssh ec2-user@35.182.252.41 sudo docker run -d -p 8080:8080 -e loginname=myname -e loginpass=mypass -e api_key=xxxxxxxx blickng/directionApp-prod:latest"
+               sh "ssh ec2-user@35.182.252.41 sudo docker run -d -p 8080:8080 -e loginname=myname -e loginpass=mypass -e api_key=xxxxxxxx blickng/direction-app-prod:latest"
              }
            }
         }
@@ -46,15 +46,15 @@ pipeline {
             }
             steps {
                 // tag docker image for dev app and push to docker.io
-                sh "sudo docker tag directionApp:latest blickng/directionApp-dev:latest"
+                sh "sudo docker tag directionApp:latest blickng/direction-app-dev:latest"
                 withCredentials([string(credentialsId: 'DockerUserID', variable: 'dockerusername'), string(credentialsId: 'DockerPassword', variable: 'dockerpassword')]) {
                 sh "sudo docker login -u blickng -p $dockerpassword"
-                sh "sudo docker push blickng/directionApp-dev:latest"
+                sh "sudo docker push blickng/direction-app-dev:latest"
                 sh "sudo docker logout"
                 }   
                 // ssh into dev machine Pull docker image and run container instance in remote machine
                 withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-key', keyFileVariable: '')]) {
-               sh "ssh ec2-user@35.182.252.41 sudo docker run -d -p 8080:8080 -e loginname=myname -e loginpass=mypass -e api_key=xxxxxxxx blickng/directionApp-dev:latest"
+               sh "ssh ec2-user@35.182.252.41 sudo docker run -d -p 8080:8080 -e loginname=myname -e loginpass=mypass -e api_key=xxxxxxxx blickng/direction-app-dev:latest"
              }
            }
         }
