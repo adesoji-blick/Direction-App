@@ -25,7 +25,7 @@ pipeline {
     // some block
                 sh "sudo docker login -u blickng -p $dockerpassword"
                 sh "sudo docker push blickng/direction-prod:latest"
-                sh "sudo docker logout"
+                // sh "sudo docker logout"
 }            
             }
         }
