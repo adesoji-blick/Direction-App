@@ -19,7 +19,7 @@ pipeline {
         stage('Build Docker Image for Direction-App') {
             steps {
                 // Building Docker Image for Direction App
-                sh "sudo docker build -t directionApp:latest ."        
+                sh "sudo docker build -t direction-app:latest ."        
             }
         }
         stage('Manage Master Branch for Prod App') {
@@ -28,7 +28,7 @@ pipeline {
             }
             steps {
                 // tag docker image for prod app and push to docker.io
-                sh "sudo docker tag directionApp:latest blickng/direction-app-prod:latest"
+                sh "sudo docker tag direction-app:latest blickng/direction-app-prod:latest"
                 withCredentials([string(credentialsId: 'DockerUserID', variable: 'dockerusername'), string(credentialsId: 'DockerPassword', variable: 'dockerpassword')]) {
                 sh "sudo docker login -u blickng -p $dockerpassword"
                 sh "sudo docker push blickng/directionApp-prod:latest"
@@ -46,7 +46,7 @@ pipeline {
             }
             steps {
                 // tag docker image for dev app and push to docker.io
-                sh "sudo docker tag directionApp:latest blickng/direction-app-dev:latest"
+                sh "sudo docker tag direction-app:latest blickng/direction-app-dev:latest"
                 withCredentials([string(credentialsId: 'DockerUserID', variable: 'dockerusername'), string(credentialsId: 'DockerPassword', variable: 'dockerpassword')]) {
                 sh "sudo docker login -u blickng -p $dockerpassword"
                 sh "sudo docker push blickng/direction-app-dev:latest"
