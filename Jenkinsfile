@@ -31,7 +31,7 @@ pipeline {
                 sh "sudo docker tag direction-app:latest blickng/direction-app-prod:latest"
                 withCredentials([string(credentialsId: 'DockerUserID', variable: 'dockerusername'), string(credentialsId: 'DockerPassword', variable: 'dockerpassword')]) {
                 sh "sudo docker login -u blickng -p $dockerpassword"
-                sh "sudo docker push blickng/directionApp-prod:latest"
+                sh "sudo docker push blickng/direction-app-prod:latest"
                 sh "sudo docker logout"
                 }   
                 // ssh into prod machine Pull docker image and run container instance in remote machine
