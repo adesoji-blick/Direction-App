@@ -6,16 +6,6 @@ pipeline {
             AWS_DEFAULT_REGION    = credentials ('AWS_DEFAULT_REGION')
         } 
     stages {
-        // stage('Download Direction-App code') {
-        //     steps {
-        //         // Get direction App code from the repository
-        //         git 'https://github.com/adesoji-blick/Direction-App.git'
-        //         // current working directory
-        //         sh "pwd"
-        //         // List current contents.
-        //         sh "ls -ltr"
-        //     }
-        // }
         stage('Build Docker Image for Direction-App') {
             steps {
                 // Building Docker Image for Direction App
