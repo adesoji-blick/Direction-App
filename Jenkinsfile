@@ -22,22 +22,33 @@ pipeline {
                 sh "sudo docker build -t direction-prod:latest ."
                 sh "sudo docker tag direction-prod:latest blickng/direction-prod:latest"
                 withCredentials([string(credentialsId: 'DockerUserID', variable: 'dockerusername'), string(credentialsId: 'DockerPassword', variable: 'dockerpassword')]) {
-    // some block
                 sh "sudo docker login -u blickng -p $dockerpassword"
                 sh "sudo docker push blickng/direction-prod:latest"
-                // sh "sudo docker logout"
-}            
+                sh "sudo docker logout"
+                }            
             }
         }
-        stage('Pull docker image and run container instance') {
-            steps {
-                // ssh into prod machine
-                withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-key', keyFileVariable: '')]) {
-    // some block
-               sh "ssh ec2-user@99.79.10.86 sudo docker run -d -p 8080:8080 -e loginname=myname -e loginpass=mypass -e api_key=xxxxxxxx blickng/direction-prod:latest"
-}
-                
+        stage('Master Branch') {
+            when {
+                branch "master"
             }
+            steps {
+                // ssh into prod, machine Pull docker image and run container instance in remote machine
+                withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-key', keyFileVariable: '')]) {
+               sh "ssh ec2-user@35.182.252.41 sudo docker run -d -p 8080:8080 -e loginname=myname -e loginpass=mypass -e api_key=xxxxxxxx blickng/direction-prod:latest"
+             }
+           }
+        }
+        stage('Develop Branch') {
+            when {
+                branch "master"
+            }
+            steps {
+                // ssh into dev, machine Pull docker image and run container instance in remote machine
+                withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-key', keyFileVariable: '')]) {
+               sh "ssh ec2-user@99.79.10.86 sudo docker run -d -p 8080:8080 -e loginname=myname -e loginpass=mypass -e api_key=xxxxxxxx blickng/direction-prod:latest"
+             }
+           }
         }
     }
 }
